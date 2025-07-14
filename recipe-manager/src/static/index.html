@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Manager - Your Personal Recipe & Meal Planning Assistant</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-utensils"></i>
+                <span>Recipe Manager</span>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#recipes" class="nav-link" data-page="recipes">
+                    <i class="fas fa-book"></i>
+                    <span>Recipes</span>
+                </a>
+                <a href="#meal-planning" class="nav-link" data-page="meal-planning">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Meal Planning</span>
+                </a>
+                <a href="#shopping-lists" class="nav-link" data-page="shopping-lists">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Shopping Lists</span>
+                </a>
+                <a href="#categories" class="nav-link" data-page="categories">
+                    <i class="fas fa-tags"></i>
+                    <span>Categories</span>
+                </a>
+                <a href="#ai-assistant" class="nav-link" data-page="ai-assistant">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="search-btn" id="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search recipes, ingredients, or meal plans..." id="global-search">
+            <button class="search-close" id="search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard-page">
+            <div class="page-header">
+                <h1>Welcome Back!</h1>
+                <p>Manage your recipes and plan your meals with ease</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-recipes">0</h3>
+                        <p>Total Recipes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="planned-meals">0</h3>
+                        <p>Planned Meals</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="shopping-lists-count">0</h3>
+                        <p>Shopping Lists</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="categories-count">0</h3>
+                        <p>Categories</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-sections">
+                <section class="recent-recipes">
+                    <div class="section-header">
+                        <h2>Recent Recipes</h2>
+                        <a href="#recipes" class="view-all-btn" data-page="recipes">View All</a>
+                    </div>
+                    <div class="recipe-grid" id="recent-recipes-grid">
+                        <!-- Recent recipes will be loaded here -->
+                    </div>
+                </section>
+
+                <section class="upcoming-meals">
+                    <div class="section-header">
+                        <h2>This Week's Meals</h2>
+                        <a href="#meal-planning" class="view-all-btn" data-page="meal-planning">View Calendar</a>
+                    </div>
+                    <div class="meal-week-preview" id="meal-week-preview">
+                        <!-- Week preview will be loaded here -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Recipes Page -->
+        <div class="page" id="recipes-page">
+            <div class="page-header">
+                <h1>Recipes</h1>
+                <button class="primary-btn" id="add-recipe-btn">
+                    <i class="fas fa-plus"></i>
+                    Add Recipe
+                </button>
+            </div>
+
+            <div class="filters-section">
+                <div class="category-filters" id="recipe-category-filters">
+                    <button class="filter-btn active" data-category="">All</button>
+                    <!-- Category filters will be loaded here -->
+                </div>
+                <div class="search-section">
+                    <input type="text" class="search-input" placeholder="Search recipes..." id="recipe-search">
+                </div>
+            </div>
+
+            <div class="recipes-grid" id="recipes-grid">
+                <!-- Recipes will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Meal Planning Page -->
+        <div class="page" id="meal-planning-page">
+            <div class="page-header">
+                <h1>Meal Planning</h1>
+                <div class="meal-planning-controls">
+                    <div class="people-counter">
+                        <label>People:</label>
+                        <button class="counter-btn" id="people-decrease">-</button>
+                        <span class="counter-value" id="people-count">4</span>
+                        <button class="counter-btn" id="people-increase">+</button>
+                    </div>
+                    <button class="primary-btn" id="generate-shopping-list-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        Generate Shopping List
+                    </button>
+                </div>
+            </div>
+
+            <div class="week-navigation">
+                <button class="week-nav-btn" id="prev-week">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <h2 id="current-week">This Week</h2>
+                <button class="week-nav-btn" id="next-week">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="meal-calendar" id="meal-calendar">
+                <!-- Meal calendar will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Shopping Lists Page -->
+        <div class="page" id="shopping-lists-page">
+            <div class="page-header">
+                <h1>Shopping Lists</h1>
+                <button class="primary-btn" id="create-shopping-list-btn">
+                    <i class="fas fa-plus"></i>
+                    Create List
+                </button>
+            </div>
+
+            <div class="shopping-lists-grid" id="shopping-lists-grid">
+                <!-- Shopping lists will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Categories Page -->
+        <div class="page" id="categories-page">
+            <div class="page-header">
+                <h1>Categories</h1>
+                <button class="primary-btn" id="add-category-btn">
+                    <i class="fas fa-plus"></i>
+                    Add Category
+                </button>
+            </div>
+
+            <div class="categories-section">
+                <div class="category-type-tabs">
+                    <button class="tab-btn active" data-type="recipe">Recipe Categories</button>
+                    <button class="tab-btn" data-type="meal">Meal Categories</button>
+                </div>
+
+                <div class="categories-grid" id="categories-grid">
+                    <!-- Categories will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant Page -->
+        <div class="page" id="ai-assistant-page">
+            <div class="page-header">
+                <h1>AI Recipe Assistant</h1>
+                <p>Get recipe suggestions, cooking tips, and ingredient substitutions</p>
+            </div>
+
+            <div class="ai-chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Hello! I'm your AI recipe assistant. I can help you with:</p>
+                            <ul>
+                                <li>Recipe suggestions based on your ingredients</li>
+                                <li>Ingredient substitutions</li>
+                                <li>Cooking tips and techniques</li>
+                                <li>Meal planning advice</li>
+                            </ul>
+                            <p>What would you like to know?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" placeholder="Ask me about recipes, ingredients, or cooking..." id="chat-input">
+                    <button class="send-btn" id="send-chat-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="quick-action-btn" data-action="suggestions">
+                        <i class="fas fa-lightbulb"></i>
+                        Recipe Suggestions
+                    </button>
+                    <button class="quick-action-btn" data-action="substitutions">
+                        <i class="fas fa-exchange-alt"></i>
+                        Substitutions
+                    </button>
+                    <button class="quick-action-btn" data-action="tips">
+                        <i class="fas fa-star"></i>
+                        Cooking Tips
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Recipe Modal -->
+    <div class="modal" id="recipe-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="recipe-modal-title">Add Recipe</h2>
+                <button class="modal-close" id="recipe-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="recipe-form">
+                    <div class="form-group">
+                        <label for="recipe-name">Recipe Name *</label>
+                        <input type="text" id="recipe-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="recipe-category">Category</label>
+                            <select id="recipe-category" name="category_id">
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipe-servings">Servings</label>
+                            <input type="number" id="recipe-servings" name="servings" value="4" min="1">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="recipe-prep-time">Prep Time (minutes)</label>
+                            <input type="number" id="recipe-prep-time" name="prep_time" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipe-cook-time">Cook Time (minutes)</label>
+                            <input type="number" id="recipe-cook-time" name="cook_time" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipe-description">Description</label>
+                        <textarea id="recipe-description" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ingredients</label>
+                        <div class="ingredients-list" id="ingredients-list">
+                            <!-- Ingredients will be added here -->
+                        </div>
+                        <button type="button" class="secondary-btn" id="add-ingredient-btn">
+                            <i class="fas fa-plus"></i>
+                            Add Ingredient
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipe-instructions">Instructions</label>
+                        <textarea id="recipe-instructions" name="instructions" rows="6"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="recipe-cancel-btn">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Recipe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal" id="category-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="category-modal-title">Add Category</h2>
+                <button class="modal-close" id="category-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="category-form">
+                    <div class="form-group">
+                        <label for="category-name">Category Name *</label>
+                        <input type="text" id="category-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category-type">Type *</label>
+                        <select id="category-type" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="recipe">Recipe Category</option>
+                            <option value="meal">Meal Category</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="category-cancel-btn">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+    
+    <!-- JavaScript -->
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/recipes.js"></script>
+    <script src="/static/js/categories.js"></script>
+    <script src="/static/js/meal-planning.js"></script>
+    <script src="/static/js/shopping-lists.js"></script>
+    <script src="/static/js/ai-assistant.js"></script>
+</body>
+</html>
+
